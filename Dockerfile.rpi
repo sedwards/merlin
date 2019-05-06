@@ -51,8 +51,11 @@ RUN \
 RUN \
   bash tools/compile_other_speech_tools.sh
 
+ARG HTK_USERNAME
+ARG HTK_PASSWORK
+
 # HTK
 RUN \
-  bash tools/compile_htk.sh
+  bash tools/compile_htk.sh $HTK_USERNAME $HTK_PASSWORD
 
 
