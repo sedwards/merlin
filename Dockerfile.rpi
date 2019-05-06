@@ -1,0 +1,58 @@
+FROM raspbian/stretch
+
+RUN \
+  apt-get update && \
+  apt-get upgrade -y
+
+RUN \
+  apt install -y \
+   autoconf \
+   automake \
+   bison \
+   build-essential \
+   cmake \
+   csh \
+   curl \
+   flex \
+   git \
+   g++ \
+   pkg-config \
+   python2.7 \
+   python-pip \
+   python-dev \
+   python-pip \
+   python3-dev \
+   python3-pip
+
+RUN \ 
+  apt install -y \
+   libatlas-base-dev \
+   libffi-dev \
+   libfreetype6-dev \
+   libncurses-dev \
+   libpng-dev \
+   libssl-dev
+
+RUN pip3 install -U pip virtualenv 
+RUN pip3 install -U tensorflow
+
+# Merlin
+RUN mkdir /merlin
+WORKDIR /merlin
+ADD . /merlin
+
+RUN bash tools/compile_tools.sh
+
+RUN \
+  pip3 install numpy && \
+  pip3 install -r requirements.txt
+
+# Festival
+RUN \
+  bash tools/compile_other_speech_tools.sh
+
+# HTK
+RUN \
+  bash tools/compile_htk.sh
+
+
